@@ -33,7 +33,7 @@ app.get('/ImageUploadService.xsd', function(req, res) {
 //	res.sendFile(__dirname + '/public/wsdl/data.wsdl');
 //	res.send('Hello World');
 
-	fs.readFile(__dirname + '/public/wsdl/data.wsdl', 'utf8' , (err, data) => {
+	fs.readFile(__dirname + '/public/wsdl/ImageUploadService.xsd', 'utf8' , (err, data) => {
 		if (err) {
 		  console.error(err)
 		  return
