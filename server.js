@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+const fs = require('fs')
 
 // set the port of our application
 // process.env.PORT lets the port be set by Heroku
@@ -12,8 +13,18 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 
 // set the home page route
-app.get('/', function(req, res) {
-	res.send('Hello World');
+app.get('/data.wsdl', function(req, res) {
+	res.contentType("text/xml");
+//	res.sendFile(__dirname + '/public/wsdl/data.wsdl');
+//	res.send('Hello World');
+
+	fs.readFile(__dirname + '/public/wsdl/data.wsdl', 'utf8' , (err, data) => {
+		if (err) {
+		  console.error(err)
+		  return
+		}
+		res.send(data);
+	  })
 	// ejs render automatically looks in the views folder
 	//res.render('index');
 });
