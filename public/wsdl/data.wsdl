@@ -1,227 +1,49 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
- xmlns:tns="http://www.example.org/aem-interface" 
- xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
- xmlns:xsd="http://www.w3.org/2001/XMLSchema"
- name="AemInterface" targetNamespace="http://www.example.org/aem-interface">
-  <wsdl:types>
-    <xsd:schema targetNamespace="http://www.example.org/aem-interface">
-       <xsd:element name="ValidateNameAddressRequest">
-        <xsd:complexType>
-            <xsd:sequence>
-        <xsd:element name="Customer">
-          <xsd:complexType>
-            <xsd:sequence>
-              <xsd:element type="xsd:string" name="Crn"/>
-              <xsd:element type="xsd:string" name="FirstName"/>
-              <xsd:element type="xsd:string" name="Surname"/>
-            </xsd:sequence>
-          </xsd:complexType>
-        </xsd:element>
-        <xsd:element name="Metadata">
-          <xsd:complexType>
-            <xsd:sequence>
-              <xsd:element type="xsd:short" name="InputRefId"/>
-              <xsd:element type="xsd:string" name="CnfrmDate"/>
-            </xsd:sequence>
-          </xsd:complexType>
-        </xsd:element>
-      </xsd:sequence>
-      </xsd:complexType>
-      </xsd:element>
-      
-     <xsd:element name="ValidateNameAddressResponse">
-     <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element name="Customer">
-          <xsd:complexType>
-            <xsd:sequence>
-              <xsd:element type="xsd:string" name="Crn"/>
-              <xsd:element type="xsd:string" name="FirstName"/>
-              <xsd:element type="xsd:string" name="Surname"/>
-            </xsd:sequence>
-          </xsd:complexType>
-        </xsd:element>
-        <xsd:element name="Metadata">
-          <xsd:complexType>
-            <xsd:sequence>
-              <xsd:element type="xsd:string" name="ResultCode"/>
-              <xsd:element type="xsd:string" name="ResultDescription"/>
-            </xsd:sequence>
-          </xsd:complexType>
-        </xsd:element>
-      </xsd:sequence>
-    </xsd:complexType>
-    </xsd:element>
-    
-    
-      <xsd:element name="VerifyDVARequest">
-      <xsd:complexType>
-             <xsd:sequence>
-        <xsd:element name="Customer">
-          <xsd:complexType>
-            <xsd:sequence>
-              <xsd:element type="xsd:string" name="CustId"/>
-              <xsd:element type="xsd:string" name="OrgType"/>
-              <xsd:element type="xsd:string" name="FirstName"/>
-              <xsd:element type="xsd:string" name="Surname"/>
-            </xsd:sequence>
-          </xsd:complexType>
-        </xsd:element>
-        <xsd:element name="Metadata">
-          <xsd:complexType>
-            <xsd:sequence>
-              <xsd:element type="xsd:short" name="InputRefId"/>
-              <xsd:element type="xsd:string" name="CnfrmDate"/>
-            </xsd:sequence>
-          </xsd:complexType>
-        </xsd:element>
-      </xsd:sequence></xsd:complexType>
-      </xsd:element>
-      
-      	
-            <xsd:element name="VerifyDVAResponse">
-            <xsd:complexType>
-             <xsd:sequence>
-        <xsd:element name="Customer">
-          <xsd:complexType>
-            <xsd:sequence>
-              <xsd:element type="xsd:string" name="CustId"/>
-              <xsd:element type="xsd:string" name="FirstName"/>
-              <xsd:element type="xsd:string" name="Surname"/>
-              <xsd:element type="xsd:string" name="Pcc"/>
-            </xsd:sequence>
-          </xsd:complexType>
-        </xsd:element>
-        <xsd:element name="Metadata">
-          <xsd:complexType>
-            <xsd:sequence>
-              <xsd:element type="xsd:string" name="ResultCode"/>
-              <xsd:element type="xsd:string" name="ResultDescription"/>
-            </xsd:sequence>
-          </xsd:complexType>
-        </xsd:element>
-      </xsd:sequence></xsd:complexType>
-      </xsd:element>
-            <xsd:element name="GetCustomerBenefitsRequest">
-            <xsd:complexType>
-             <xsd:sequence>
-        <xsd:element name="Customer">
-          <xsd:complexType>
-            <xsd:sequence>
-              <xsd:element type="xsd:string" name="Crn"/>
-              <xsd:element type="xsd:string" name="ScndryCrn"/>
-              <xsd:element type="xsd:string" name="Hcc"/>
-              <xsd:element type="xsd:string" name="Pcc"/>
-              <xsd:element type="xsd:string" name="FirstName" minOccurs="0"/>
-              <xsd:element type="xsd:string" name="Surname" minOccurs="0"/>
-            </xsd:sequence>
-          </xsd:complexType>
-        </xsd:element>
-        <xsd:element name="Metadata">
-          <xsd:complexType>
-            <xsd:sequence>
-              <xsd:element type="xsd:short" name="InputRefId"/>
-              <xsd:element type="xsd:string" name="CnfrmDate"/>
-            </xsd:sequence>
-          </xsd:complexType>
-        </xsd:element>
-      </xsd:sequence></xsd:complexType>
-      </xsd:element>
-      
-            <xsd:element name="GetCustomerBenefitsResponse">
-            <xsd:complexType>
-         <xsd:sequence>
-        <xsd:element name="Customer">
-          <xsd:complexType>
-            <xsd:sequence>
-              <xsd:element type="xsd:string" name="Crn"/>
-              <xsd:element type="xsd:string" name="ScndryCrn"/>
-              <xsd:element type="xsd:string" name="Hcc"/>
-              <xsd:element type="xsd:string" name="Pcc"/>
-              <xsd:element type="xsd:string" name="FirstName" minOccurs="0"/>
-              <xsd:element type="xsd:string" name="Surname" minOccurs="0"/>
-            </xsd:sequence>
-          </xsd:complexType>
-        </xsd:element>
-        <xsd:element name="Metadata">
-          <xsd:complexType>
-            <xsd:sequence>
-               <xsd:element type="xsd:string" name="Result"/>
-              <xsd:element type="xsd:string" name="ResultCode"/>
-              <xsd:element type="xsd:string" name="ResultDescription"/>
-            </xsd:sequence>
-          </xsd:complexType>
-        </xsd:element>
-      </xsd:sequence></xsd:complexType>
-      </xsd:element>
-        </xsd:schema>
-  </wsdl:types>
-  <wsdl:message name="ValidateNameAddressRequest">
-    <wsdl:part element="tns:ValidateNameAddressRequest" name="parameters" />
-  </wsdl:message>
-  <wsdl:message name="ValidateNameAddressResponse">
-    <wsdl:part name="parameters" element="tns:ValidateNameAddressResponse"/>
-  </wsdl:message>
-  <wsdl:message name="VerifyDVARequest">
-  	<wsdl:part name="parameters" element="tns:VerifyDVARequest"></wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="VerifyDVAResponse">
-  	<wsdl:part name="parameters" element="tns:VerifyDVAResponse"></wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="GetCustomerBenefitsRequest">
-  	<wsdl:part name="parameters" element="tns:GetCustomerBenefitsRequest"></wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="GetCustomerBenefitsResponse">
-  	<wsdl:part name="parameters" element="tns:GetCustomerBenefitsResponse"></wsdl:part>
-  </wsdl:message>
-  <wsdl:portType name="AemInterfacePortType">
-    <wsdl:operation name="ValidateNameAddress">
-      <wsdl:input message="tns:ValidateNameAddressRequest"/>
-      <wsdl:output message="tns:ValidateNameAddressResponse"/>
-    </wsdl:operation>
-    <wsdl:operation name="VerifyDVA">
-    	<wsdl:input message="tns:VerifyDVARequest"></wsdl:input>
-    	<wsdl:output message="tns:VerifyDVAResponse"></wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetCustomerBenefits">
-    	<wsdl:input message="tns:GetCustomerBenefitsRequest"></wsdl:input>
-    	<wsdl:output message="tns:GetCustomerBenefitsResponse"></wsdl:output>
-    </wsdl:operation>
-  </wsdl:portType>
-  <wsdl:binding name="AemInterfaceSoapBinding" type="tns:AemInterfacePortType">
-    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-    <wsdl:operation name="ValidateNameAddress">
-      <soap:operation soapAction="http://www.example.org/aem-interface/validatenameaddress"/>
-      <wsdl:input>
-        <soap:body namespace="http://www.example.org/aem-interface" use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-       <soap:body namespace="http://www.example.org/aem-interface" use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-        <wsdl:operation name="VerifyDVA">
-      <soap:operation soapAction="http://www.example.org/aem-interface/verifydva"/>
-      <wsdl:input>
-        <soap:body namespace="http://www.example.org/aem-interface" use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body namespace="http://www.example.org/aem-interface" use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-        <wsdl:operation name="GetCustomerBenefits">
-      <soap:operation soapAction="http://www.example.org/aem-interface/getcustomerbenefits"/>
-      <wsdl:input>
-        <soap:body namespace="http://www.example.org/aem-interface" use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body namespace="http://www.example.org/aem-interface" use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-  </wsdl:binding>
-  <wsdl:service name="AemInterface">
-    <wsdl:port binding="tns:AemInterfaceSoapBinding" name="AemInterfacePort">
-      <soap:address location="http://localhost:8088/AemInterface/AemInterfacePort"/>
-    </wsdl:port>
-  </wsdl:service>
-</wsdl:definitions>
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions targetNamespace="http://com.intellect.ImageUploadService/ws" name="ImageUploadService" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://com.intellect.ImageUploadService/ws" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema>
+      <xsd:import namespace="http://com.intellect.ImageUploadService/ws"/>
+	    <xsd:element name="ImageResponseVO" type="tns:imageResponseVO"/>
+  <xsd:complexType name="imageResponseVO">
+    <xsd:sequence>
+      <xsd:element name="errorCode" type="xs:string" minOccurs="0"/>
+      <xsd:element name="errorDesc" type="xs:string" minOccurs="0"/>
+      <xsd:element name="status" type="xs:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+    </xsd:schema>
+  </types>
+  <message name="uploadImage">
+    <part name="requestId" type="xsd:string"/>
+    <part name="imageName" type="xsd:string"/>
+    <part name="imageByte" type="xsd:base64Binary"/>
+    <part name="imageType" type="xsd:string"/>
+    <part name="source" type="xsd:string"/>
+  </message>
+  <message name="uploadImageResponse">
+    <part name="ImageResponseVO" type="tns:imageResponseVO"/>
+  </message>
+  <portType name="ImageUploadPortType">
+    <operation name="uploadImage" parameterOrder="requestId imageName imageByte imageType source">
+      <input message="tns:uploadImage"/>
+      <output message="tns:uploadImageResponse"/>
+    </operation>
+  </portType>
+  <binding name="ImageUploadPortTypeBinding" type="tns:ImageUploadPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc"/>
+    <operation name="uploadImage">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal" namespace="http://com.intellect.ImageUploadService/ws"/>
+      </input>
+      <output>
+        <soap:body use="literal" namespace="http://com.intellect.ImageUploadService/ws"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="ImageUploadService">
+    <port name="ImageUploadPortType" binding="tns:ImageUploadPortTypeBinding">
+      <soap:address location="http://10.10.7.27:20001/DAP/ImageUploadService"/>
+    </port>
+  </service>
+</definitions>
