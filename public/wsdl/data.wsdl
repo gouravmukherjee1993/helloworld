@@ -7,7 +7,7 @@
   </types>
   <message name="uploadImage">
     <part name="requestId" type="xsd:string"/>
-    <part name="imageName"/>
+    <part name="imageName" type="xsd:string"/>
     <part name="imageByte" type="xsd:base64Binary"/>
     <part name="imageType" type="xsd:string"/>
     <part name="source" type="xsd:string"/>
