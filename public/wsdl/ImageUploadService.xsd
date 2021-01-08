@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.1.1-b03-.--><xs:schema version="1.0" targetNamespace="http://com.intellect.ImageUploadService/ws" xmlns:tns="http://com.intellect.ImageUploadService/ws" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:element name="ImageResponseVO" type="tns:imageResponseVO">
+  <xs:element name="ImageResponseVO" type="tns:imageResponseVO"/>
   <xs:complexType name="imageResponseVO">
     <xs:sequence>
       <xs:element name="errorCode" type="xs:string" minOccurs="0"/>
@@ -8,5 +8,4 @@
       <xs:element name="status" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
-  </xs:element>
 </xs:schema>
