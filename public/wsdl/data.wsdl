@@ -68,7 +68,7 @@
 		<port name="ImageUploadPortType"
 				binding="tns:ImageUploadPortTypeBinding">
 			<soap:address
-					location="http://10.10.7.27:20001/DAP/ImageUploadService" />
+					location="https://openapiuat.hdfcbank.com:9443/API/APS2_ImageUploadService" />
 		</port>
 	</service>
 </definitions>
