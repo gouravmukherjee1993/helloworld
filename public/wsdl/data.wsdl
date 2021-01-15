@@ -18,7 +18,6 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
-
 			<xsd:element name="uploadImage" >
 				<xsd:complexType >
 					<xsd:sequence>
@@ -30,14 +29,11 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
-
 		</xsd:schema>
 	</types>
-
 	<message name="uploadImage">
 		<part name="uploadImage" element="tns:uploadImage" />
 	</message>
-
 	<message name="uploadImageResponse">
 		<part name="ImageResponseVO" element="tns:imageResponseVO" />
 	</message>
