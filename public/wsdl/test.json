@@ -1,0 +1,166 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "Get Debit Card Details",
+    "contact": {}
+  },
+  "host": "openapiuat.hdfcbank.com:9443",
+  "basePath": "/API",
+  "schemes": [
+    "https"
+  ],
+  "parameters": {
+    "Id-token-jwt": {
+      "in": "formData",
+      "name": "Id-token-jwt",
+      "type": "string"
+    }
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/Adobe_FetchDCStatus": {
+      "post": {
+        "summary": "Get Debit Card Details",
+        "tags": [
+          "Misc"
+        ],
+        "operationId": "Get_Debit_Card_Details",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/Id-token-jwt"
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/RequestPayload"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ResponsePayload"
+            },
+            "headers": {}
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "RequestPayload": {
+      "properties": {
+        "customerId": {
+          "type": "string"
+        },
+        "dcLast4Digits": {
+          "type": "string"
+        },
+        "channel": {
+          "type": "string"
+        },
+        "bankCode": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "transactionBranch": {
+          "type": "string"
+        },
+        "externalRefNumber": {
+          "type": "string"
+        },
+        "journeyId": {
+          "type": "string"
+        },
+        "journeyName": {
+          "type": "string"
+        },
+        "mobileNumber": {
+          "type": "string"
+        }
+      }
+    },
+    "ResponsePayload": {
+      "title": "Get_Debit_Card_Details_Response",
+      "type": "object",
+      "properties": {
+        "errorCode": {
+          "type": "string"
+        },
+        "errorDesc": {
+          "type": "string"
+        },
+        "Scope": {
+          "type": "string"
+        },
+        "TransactionId": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "maintenanceType": {
+          "type": "string"
+        },
+        "configVersionId": {
+          "type": "string"
+        },
+        "cardCount": {
+          "type": "string"
+        },
+        "cardDetails": {
+          "type": "string"
+        },
+        "error": {
+          "type": "string"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "errorMessage": {
+          "type": "string"
+        },
+        "response": {
+          "type": "string"
+        },
+        "GWSymmetricKeyEncryptedValue": {
+          "type": "string"
+        },
+        "ResponseSignatureEncryptedValue": {
+          "type": "string"
+        },
+        "Status": {
+          "type": "string"
+        },
+        "cardStatus": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Misc",
+      "description": ""
+    }
+  ]
+}
