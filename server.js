@@ -29,7 +29,7 @@ app.get('/data.wsdl', function(req, res) {
 	//res.render('index');
 });
 app.get('/test.json', function(req, res) {
-	res.contentType("text/xml");
+	res.contentType("text/json");
 //	res.sendFile(__dirname + '/public/wsdl/data.wsdl');
 //	res.send('Hello World');
 
