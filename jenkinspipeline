@@ -1,0 +1,153 @@
+pipeline {
+    agent any
+    stages {
+       stage('CleanWorkspace') {
+            steps {
+                cleanWs()
+            }
+       }
+	   stage('Build') {
+        steps {
+		    echo "Workspace  : ${WORKSPACE}"
+			echo "GIT URL : ${gitURL}"
+			echo "GIT Branch Name : ${gitBranchName} , gitCredentialId : ${gitCredentialId}"
+			
+			git branch:  '${gitBranchName}', url: '${gitURL}' , credentialsId: "${gitCredentialId}"
+			
+			script {
+				pom = readMavenPom file: 'pom.xml'
+				env.artifactId = pom.artifactId
+				env.artifactVersion = pom.version
+				env.groupId = pom.groupId
+			}
+			
+			echo "ArtifactId : ${artifactId} , Version : ${artifactVersion} , Group : ${groupId}"
+			sh "mvn clean install -Dbnd.baseline.skip=true"
+         }
+       }
+	   
+	   stage('Static Code Analysis') {
+	     when {
+            expression { doStaticCodeAnalysis == 'true' }
+         }
+		 steps {
+            withSonarQubeEnv(credentialsId: '${sonarCredentialId}', installationName: 'HDFC_SonarQube') { 
+				sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+          }
+		 }
+       }
+	   
+	   stage('Deploy to Artifact Repo') {
+	     when {
+            expression { deployArtifactToRepo == 'true' }
+         }
+		 steps {
+           sh 'mvn clean deploy -Dmaven.test.skip=true -Dbnd.baseline.skip=true'
+		 }
+       }
+	   
+	   
+	  
+	  stage('Install to AEM Auth') {
+	    when {
+            expression { aemAuthURL != '' }
+        }
+		steps {
+		  echo "Managing package on : ${aemAuthURL} , User : ${aemAuthUserName}"
+		  echo "Package : ${artifactId}.all-${artifactVersion}.zip"
+		  
+		
+		  echo "Uninstalling UI Content : ${artifactId}.ui.content-${artifactVersion}.zip"
+		  sh 'curl -k --insecure -u "${aemAuthUserName}:${aemAuthUserPassword}" -F force=true -F cmd=uninstall  ${aemAuthURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.ui.content-${artifactVersion}.zip'
+		 		   
+		  echo "Deleting UI Content : ${artifactId}.ui.content-${artifactVersion}.zip"
+		  sh 'curl -k --insecure -u "${aemAuthUserName}:${aemAuthUserPassword}" -F force=true -F cmd=delete  ${aemAuthURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.ui.content-${artifactVersion}.zip'
+		 
+		  echo "Uninstalling UI Apps : ${artifactId}.ui.apps-${artifactVersion}.zip"
+		  sh 'curl -k --insecure -u "${aemAuthUserName}:${aemAuthUserPassword}" -F force=true -F cmd=uninstall  ${aemAuthURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.ui.apps-${artifactVersion}.zip'
+		 
+		  echo "Deleting UI Apps : ${artifactId}.ui.apps-${artifactVersion}.zip"
+		  sh 'curl -k --insecure -u "${aemAuthUserName}:${aemAuthUserPassword}" -F force=true -F cmd=delete  ${aemAuthURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.ui.apps-${artifactVersion}.zip'
+
+          echo "Uninstalling Config : ${artifactId}.ui.config-${artifactVersion}.zip"
+		  sh 'curl -k --insecure -u "${aemAuthUserName}:${aemAuthUserPassword}" -F force=true -F cmd=uninstall  ${aemAuthURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.ui.config-${artifactVersion}.zip'
+		   
+		  echo "Deleting Config : ${artifactId}.ui.config-${artifactVersion}.zip"
+		  sh 'curl -k --insecure -u "${aemAuthUserName}:${aemAuthUserPassword}" -F force=true -F cmd=delete  ${aemAuthURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.ui.config-${artifactVersion}.zip'
+		  		
+		  echo "Uninstalling All : ${artifactId}.all-${artifactVersion}.zip"
+		  sh 'curl -k --insecure -u "${aemAuthUserName}:${aemAuthUserPassword}" -F force=true -F cmd=uninstall  ${aemAuthURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.all-${artifactVersion}.zip'
+		 	   
+		  echo "Deleting All : ${artifactId}.all-${artifactVersion}.zip"
+		  sh 'curl -k --insecure -u "${aemAuthUserName}:${aemAuthUserPassword}" -F force=true -F cmd=delete  ${aemAuthURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.all-${artifactVersion}.zip'
+		  
+		  sh 'sleep 10'
+		  
+		  sh 'curl -k --insecure -u "${aemAuthUserName}:${aemAuthUserPassword}" -F force=true -F cmd=upload -F package=@"${WORKSPACE}/all/target/${artifactId}.all-${artifactVersion}.zip" ${aemAuthURL}crx/packmgr/service/.json'
+		
+		  sh 'sleep 10'
+		  
+		  sh 'curl -k --insecure -u "${aemAuthUserName}:${aemAuthUserPassword}" -F cmd=install  ${aemAuthURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.all-${artifactVersion}.zip'
+		  
+		 
+		  sh 'curl -k --insecure -u "${aemAuthUserName}:${aemAuthUserPassword}" -F force=true -F cmd=install  ${aemAuthURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.ui.apps-${artifactVersion}.zip'
+		  
+		  sh 'curl -k --insecure -u "${aemAuthUserName}:${aemAuthUserPassword}" -F force=true -F cmd=install  ${aemAuthURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.ui.content-${artifactVersion}.zip'
+		
+		  sh 'sleep 10'
+		  
+		}
+      }
+	  
+	  stage('Install to AEM Pub') {
+	    when {
+            expression { aemPubURL != '' }
+        }
+		steps {
+		  echo "Managing package on : ${aemPubURL} , User : ${aemPubUserName}"
+		  echo "Package : ${artifactId}.all-${artifactVersion}.zip"
+		  
+		  
+		   echo "Uninstalling UI Content : ${artifactId}.ui.content-${artifactVersion}.zip"
+		  sh 'curl -k --insecure -u "${aemPubUserName}:${aemPubUserPassword}" -F force=true -F cmd=uninstall  ${aemPubURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.ui.content-${artifactVersion}.zip'
+		 		   
+		  echo "Deleting UI Content : ${artifactId}.ui.content-${artifactVersion}.zip"
+		  sh 'curl -k --insecure -u "${aemPubUserName}:${aemPubUserPassword}" -F force=true -F cmd=delete  ${aemPubURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.ui.content-${artifactVersion}.zip'
+		 
+		  echo "Uninstalling UI Apps : ${artifactId}.ui.apps-${artifactVersion}.zip"
+		  sh 'curl -k --insecure -u "${aemPubUserName}:${aemPubUserPassword}" -F force=true -F cmd=uninstall  ${aemPubURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.ui.apps-${artifactVersion}.zip'
+		  
+		  echo "Deleting UI Apps : ${artifactId}.ui.apps-${artifactVersion}.zip"
+		  sh 'curl -k --insecure -u "${aemPubUserName}:${aemPubUserPassword}" -F force=true -F cmd=delete  ${aemPubURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.ui.apps-${artifactVersion}.zip'
+		  
+		  echo "Uninstalling Config : ${artifactId}.ui.config-${artifactVersion}.zip"
+		  sh 'curl -k --insecure -u "${aemPubUserName}:${aemPubUserPassword}" -F force=true -F cmd=uninstall  ${aemPubURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.ui.config-${artifactVersion}.zip'
+		  
+		  echo "Deleting Config : ${artifactId}.ui.config-${artifactVersion}.zip"
+		  sh 'curl -k --insecure -u "${aemPubUserName}:${aemPubUserPassword}" -F force=true -F cmd=delete  ${aemPubURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.ui.config-${artifactVersion}.zip'
+		
+		  echo "Uninstalling All : ${artifactId}.all-${artifactVersion}.zip"
+		  sh 'curl -k --insecure -u "${aemPubUserName}:${aemPubUserPassword}" -F force=true -F cmd=uninstall  ${aemPubURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.all-${artifactVersion}.zip'
+		 
+		  echo "Deleting All : ${artifactId}.all-${artifactVersion}.zip"
+		  sh 'curl -k --insecure -u "${aemPubUserName}:${aemPubUserPassword}" -F force=true -F cmd=delete  ${aemPubURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.all-${artifactVersion}.zip'
+		  
+		  sh 'sleep 10'
+		  
+		  sh 'curl -k --insecure -u "${aemPubUserName}:${aemPubUserPassword}" -F force=true -F cmd=upload  -F package=@"${WORKSPACE}/all/target/${artifactId}.all-${artifactVersion}.zip" ${aemPubURL}crx/packmgr/service/.json'
+		
+		  sh 'sleep 10'
+		  
+		  sh 'curl -k --insecure -u "${aemPubUserName}:${aemPubUserPassword}" -F cmd=install  ${aemPubURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.all-${artifactVersion}.zip'
+		  
+		  sh 'curl -k --insecure -u "${aemPubUserName}:${aemPubUserPassword}" -F force=true -F cmd=install  ${aemPubURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.ui.apps-${artifactVersion}.zip'
+		  
+		  sh 'curl -k --insecure -u "${aemPubUserName}:${aemPubUserPassword}" -F force=true -F cmd=install  ${aemPubURL}crx/packmgr/service/.json/etc/packages/${groupId}/${artifactId}.ui.content-${artifactVersion}.zip'
+		
+		  sh 'sleep 10'
+		  
+		}
+      }
+	   
+    }
+}
